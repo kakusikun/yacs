@@ -467,8 +467,10 @@ def _merge_a_into_b(a, b, root, key_list):
     for k, v_ in a.items():
         full_key = ".".join(key_list + [k])
 
-        v = copy.deepcopy(v_)
-        v = b._decode_cfg_value(v)
+        copy_v = copy.deepcopy(v_)
+        v = b._decode_cfg_value(copy_v)
+        if isinstance(v, dict):
+            v = copy_v
 
         if k in b:
             v = _check_and_coerce_cfg_value_type(v, b[k], k, full_key)
